@@ -1,0 +1,10 @@
+services:
+    mysql:
+      image: mysql:8.0
+      container_name: mysqlDB
+      restart: always
+      environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PSWD}
+      ports:
+        - "3307:3306"
