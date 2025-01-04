@@ -21,3 +21,25 @@ export const postCreateUser = async ( data: createUserDTO) => {
   });
   return {status: 201, user};
 };
+
+export const putUpdateUser = async (data: createUserDTO, id: string) => {
+  const { name, email, password } = data;
+  const findId = await prisma.user.findUnique({where: {id}});
+  if (!findId) return { status: 404 };
+  const user = await prisma.user.update({
+    where: { id },
+    data: {
+      name,
+      email,
+      password,
+    },
+  });
+  return {status: 200, user};
+}
+
+export const deleteUserById = async (id: string) => {
+  const findId = await prisma.user.findUnique({where: {id}});
+  if (!findId) return { status: 404 };
+  const user = await prisma.user.delete({where: {id}});
+  return {status: 200, user};
+};
