@@ -22,21 +22,14 @@ export class User {
   static createUser = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-      res
-        .status(400)
-        .json({
-          status: 400,
-          message: "Name, email and password are required",
-        });
+      res.status(400).json({ status: 400, message: "Name, email and password are required" });
       return;
     }
     try {
       const data = { name, email, password };
       const newUser = await postCreateUser(data);
       if (newUser.status === 409) {
-        res
-          .status(409)
-          .json({ status: newUser.status, message: "Email already exists" });
+        res.status(409).json({ status: newUser.status, message: "Email already exists" });
         return;
       }
       res.status(201).json({
