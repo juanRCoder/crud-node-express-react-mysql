@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { RouteObject } from "react-router-dom";
-import UserLayout from "../layout";
+import UserLayout from ".";
 
 const Loading = () => <div>Loading...</div>
 
