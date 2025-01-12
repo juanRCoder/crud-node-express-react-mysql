@@ -14,3 +14,7 @@ MYSQL_DATABASE
 PORT
 DATABASE_URL
 ```
+```ts
+// .env front
+VITE_HOSTLOCAL_BACK
+```
