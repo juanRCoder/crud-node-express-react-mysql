@@ -11,13 +11,12 @@ export default function ListAllUsers() {
   const { users } = useUsers();
   const rows: string[] = users ? users.filter(n => n.name).map(n => n.name) : [];
 
-
   return (
     <TableContainer className='rounded-md outline outline-[1px] outline-slate-300 dark:outline-slate-500'>
-      <Table aria-label="simple table">
+      <Table>
         <TableHead>
           <TableRow>
-            <TableCell variant="head" size='medium' className='text-xl font-bold'>
+            <TableCell variant="head" size='medium'>
               Usuarios
             </TableCell>
           </TableRow>
@@ -25,11 +24,13 @@ export default function ListAllUsers() {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row}>
-              <TableCell variant="footer" component="th" scope="row" size='small' sx={{ py: "10px" }} className='flex items-center text-lg justify-between'>
-                {row}
-                <div className='flex gap-2'>
-                  <Button variant='outlined' size='small' color='info'>actualizar</Button>
-                  <Button variant='outlined' size='small' color='warning'>eliminar</Button>
+              <TableCell variant="footer" component="th" scope="row">
+                <div className='flex items-center justify-between'>
+                  <p className='text-base'>{row}</p>
+                  <div className='flex gap-2'>
+                    <Button variant='outlined' size='small' color='info'>actualizar</Button>
+                    <Button variant='outlined' size='small' color='warning'>eliminar</Button>
+                  </div>
                 </div>
               </TableCell>
             </TableRow>

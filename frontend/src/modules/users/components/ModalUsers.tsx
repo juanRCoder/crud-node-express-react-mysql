@@ -8,11 +8,13 @@ export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolea
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full sm:w-96 p-5 rounded-md bg-slate-100 text-black dark:bg-stone-950 dark:text-white"
+        className="w-full sm:w-1/2 p-8 rounded-md bg-slate-100 text-black dark:bg-stone-950 dark:text-white"
       >
         <Typography variant="h5" component="h2">Nuevo Usuario</Typography>
         <TextField label="Username" variant="outlined" sx={{ my: "1rem" }} className="w-full" />
-        <Button variant="contained" color="success" className="w-full">Registrar usuario</Button>
+        <Button variant="contained" color="success" className="w-full">
+          Registrar usuario
+        </Button>
       </div>
     </section>
   )
