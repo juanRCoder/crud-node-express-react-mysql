@@ -8,9 +8,9 @@ export const usersRouter: RouteObject[] = [
   {
     path: '/',
     element: (
-        <Suspense fallback={<Loading />}>
-          <UserLayout />
-        </Suspense>
+      <Suspense fallback={<Loading />}>
+        <UserLayout />
+      </Suspense>
     ),
   }
 ]

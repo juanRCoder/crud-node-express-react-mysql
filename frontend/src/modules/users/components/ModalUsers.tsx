@@ -3,10 +3,18 @@ import { X } from 'lucide-react';
 import { Controller, useForm } from "react-hook-form";
 import useUsers from "../users.hooks";
 import { User } from "../users.interfaces";
+import { useEffect } from "react";
 
-export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolean) => void }) {
+type modalUsersProps = {
+  toggleModal: (bool: boolean) => void;
+  mode: 'create' | 'update';
+  user?: User;
+}
+
+export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps) {
   const { fetchUser } = useUsers();
-  const { handleSubmit, formState: { errors }, control } = useForm<User>({
+
+  const { handleSubmit, formState: { errors }, control, setValue } = useForm<User>({
     defaultValues: {
       name: '',
       email: '',
@@ -15,11 +23,19 @@ export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolea
     mode: 'onChange'
   });
 
-  const onSubmit = (data: User) => {
-    fetchUser(data);
-    toggleModal(false);
-  }
+  useEffect(() => {
+    if (user && mode === 'update') {
+      setValue('name', user.name);
+      setValue('email', user.email);
+      setValue('password', user.password);
+    }
+  }, [user, mode, setValue]);
 
+  const onSubmit = async (data: User) => {
+    // falta condicional para saber si es create o update
+    await fetchUser(data); 
+    toggleModal(false);
+  };
 
   return (
     <section
@@ -28,10 +44,10 @@ export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolea
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full sm:w-1/2 p-8 rounded-md bg-stone-950"
+        className="relative z-50 w-full sm:w-1/2 p-8 rounded-md bg-stone-950"
       >
         <div className="mb-4 flex justify-between">
-          <h2 className="text-xl text-white">Nuevo Usuario</h2>
+          <h2 className="text-xl text-white">{mode === 'create' ? 'Nuevo' : 'Actualizar'} Usuario</h2>
           <X className="cursor-pointer" onClick={() => toggleModal(false)} />
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -40,7 +56,13 @@ export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolea
             control={control}
             rules={{ required: { value: true, message: 'Campo requerido!' } }}
             render={({ field }) => (
-              <TextField {...field} variant="outlined" color="primary" label="nombre de usuario" fullWidth={true} />
+              <TextField 
+                {...field}
+                variant="outlined"
+                color="primary"
+                label="nombre de usuario"
+                fullWidth={true}
+              />
             )}
           />
           <Controller
@@ -48,12 +70,18 @@ export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolea
             control={control}
             rules={{
               required: { value: true, message: 'Campo requerido!' }, pattern: {
-                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+                value: /^[a-zA-Z0-9._-]+@gmail\.com$/,
                 message: 'Por favor, ingresa un email válido'
               }
             }}
             render={({ field }) => (
-              <TextField {...field} variant="outlined" color="primary" label="email del usuario" fullWidth={true} sx={{ mt: '1rem' }} />
+              <TextField {...field}
+              variant="outlined"
+              color="primary"
+              label="email del usuario"
+              fullWidth={true}
+              sx={{ mt: '1rem' }} 
+            />
             )}
           />
           {errors.email && <p className="pt-1 text-xs text-red-500">{errors.email.message}</p>}
@@ -67,15 +95,21 @@ export default function ModalUsers({ toggleModal }: { toggleModal: (bool: boolea
               }
             }}
             render={({ field }) => (
-              <TextField {...field} variant="outlined" color="primary" label="contrasena del usuario" fullWidth={true} sx={{ mt: '1rem' }} />
+              <TextField {...field}
+                variant="outlined"
+                color="primary"
+                label="contrasena del usuario"
+                fullWidth={true}
+                sx={{ mt: '1rem' }} 
+              />
             )}
           />
           {errors.password && <p className="pt-1 text-xs text-red-500">{errors.password.message}</p>}
           <Button type="submit" variant="contained" color="success" fullWidth={true} sx={{ mt: '1rem', py: '0.6rem' }}>
-            Crear Usuario
+            {mode === 'create' ? 'Nuevo' : 'Actualizar'} Usuario
           </Button>
         </form>
       </div>
     </section>
-  )
+  );
 }

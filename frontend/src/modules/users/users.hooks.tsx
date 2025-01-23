@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { User } from "./users.interfaces";
 import { createUser, fetchAllUsers } from "./users.services";
 
-// corregir la forma de actualizar la lista despues de crear un usaurio
+
 export default function useUsers() {
-  const [users, setUsers] = useState<User[]>();
+  const [users, setUsers] = useState<User[]>([]);
 
   const getUsers = async () => {
     const data = await fetchAllUsers('/users');
@@ -16,9 +16,5 @@ export default function useUsers() {
     await getUsers();
   }
 
-  useEffect(() => {
-    getUsers();
-  }, [getUsers]);
-
-  return { users, fetchUser}
+  return { users, fetchUser, getUsers}
 }
