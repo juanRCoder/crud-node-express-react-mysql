@@ -35,7 +35,7 @@ export class User {
       res.status(201).json({
         status: newUser.status,
         message: "User created",
-        data: newUser.user,
+        user: newUser.user,
       });
     } catch (error) {
       console.log(error);
@@ -59,7 +59,7 @@ export class User {
       res.status(200).json({
         status: updatedUser.status,
         message: "User updated",
-        data: updatedUser.user,
+        user: updatedUser.user,
       });
     } catch (error) {
       console.log(error);
