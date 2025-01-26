@@ -1,3 +1,2 @@
-const HOSTLOCAL_BACK = import.meta.env.VITE_HOSTLOCAL_BACK;
+export const HOST_BACK = import.meta.env.VITE_HOST_BACK;
 
-export { HOSTLOCAL_BACK };

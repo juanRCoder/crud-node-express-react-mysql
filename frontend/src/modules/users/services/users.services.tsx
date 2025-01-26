@@ -1,9 +1,15 @@
-import { HOSTLOCAL_BACK } from "../../config/env.config"
-import { User } from "./users.interfaces";
+import { HOST_BACK } from "../../../config/env.config"
 
-export const fetchAllUsers = async (endpoint: string): Promise<User[] | null> => {
+export interface User {
+  id?: string;
+  name: string;
+  email: string;
+  password?: string; 
+}
+
+export const fetchAllUsers = async (): Promise<User[] | null> => {
   try {
-    const response = await fetch(`${HOSTLOCAL_BACK}${endpoint}`);
+    const response = await fetch(`${HOST_BACK}/users`);
     if (!response.ok) throw new Error("No se ha podido realizar la solicitud");
     const data = await response.json();
     return data.users;
@@ -13,13 +19,11 @@ export const fetchAllUsers = async (endpoint: string): Promise<User[] | null> =>
   }
 }
 
-export const createUser = async (endpoint: string, body: User) => {
+export const createUser = async (body: User) => {
   try {
-    const response = await fetch(`${HOSTLOCAL_BACK}${endpoint}`, {
+    const response = await fetch(`${HOST_BACK}/users`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(body)
     });
     if (!response.ok) throw new Error("No se ha podido realizar la solicitud");

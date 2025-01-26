@@ -5,7 +5,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
-import { User } from '../users.interfaces';
+import { User } from '../services/users.services';
 
 type ListAllUsersProps = {
   users: User[];

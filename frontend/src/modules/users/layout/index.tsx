@@ -1,9 +1,10 @@
 import { Button, Container } from "@mui/material";
-import ListAllUsers from "./components/ListAllUsers";
+import ListAllUsers from "../components/ListAllUsers";
 import { useEffect, useState } from "react";
-import ModalUsers from "./components/ModalUsers";
-import useUsers from "./users.hooks";
-import { User } from "./users.interfaces";
+import ModalUsers from "../components/ModalUsers";
+import useUsers from "../hooks/users.hooks";
+import { User } from "../services/users.services";
+
 
 export default function UserLayout() {
   const [updateUser, setUpdateUser] = useState({} as User);
@@ -12,9 +13,9 @@ export default function UserLayout() {
     update: false
   });
   const { users, getUsers } = useUsers();
-  
-  const toggleModal = (mode: string  ,state: boolean, user?: User) => {
-    setModal((prev) => ({...prev, [mode]: state}));
+
+  const toggleModal = (mode: string, state: boolean, user?: User) => {
+    setModal((prev) => ({ ...prev, [mode]: state }));
     setUpdateUser(user || {} as User);
   }
 
@@ -36,8 +37,8 @@ export default function UserLayout() {
           </Button>
         </div>
       </section>
-      {modal.create && <ModalUsers toggleModal={() => toggleModal("create", false)} mode="create"/>}
-      {modal.update && <ModalUsers toggleModal={() => toggleModal("update", false)} mode="update" user={updateUser}/>}
+      {modal.create && <ModalUsers toggleModal={() => toggleModal("create", false)} mode="create" />}
+      {modal.update && <ModalUsers toggleModal={() => toggleModal("update", false)} mode="update" user={updateUser} />}
     </Container>
   )
 }

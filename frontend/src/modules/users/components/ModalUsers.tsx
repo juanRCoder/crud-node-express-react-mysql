@@ -1,9 +1,9 @@
 import { Button, TextField } from "@mui/material";
 import { X } from 'lucide-react';
 import { Controller, useForm } from "react-hook-form";
-import useUsers from "../users.hooks";
-import { User } from "../users.interfaces";
 import { useEffect } from "react";
+import { User } from "../services/users.services";
+import useUsers from "../hooks/users.hooks";
 
 type modalUsersProps = {
   toggleModal: (bool: boolean) => void;
@@ -12,7 +12,7 @@ type modalUsersProps = {
 }
 
 export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps) {
-  const { fetchUser } = useUsers();
+  const { CreateUser } = useUsers();
 
   const { handleSubmit, formState: { errors }, control, setValue } = useForm<User>({
     defaultValues: {
@@ -33,7 +33,8 @@ export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps)
 
   const onSubmit = async (data: User) => {
     // falta condicional para saber si es create o update
-    await fetchUser(data); 
+    // falta funcionalidad de update
+    await CreateUser(data); 
     toggleModal(false);
   };
 
@@ -44,7 +45,7 @@ export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps)
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative z-50 w-full sm:w-1/2 p-8 rounded-md bg-stone-950"
+        className="relative z-50 w-full sm:w-1/2 p-8 rounded-md backdrop-blur-sm"
       >
         <div className="mb-4 flex justify-between">
           <h2 className="text-xl text-white">{mode === 'create' ? 'Nuevo' : 'Actualizar'} Usuario</h2>
@@ -65,6 +66,7 @@ export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps)
               />
             )}
           />
+          {errors.name && <p className="pt-1 text-xs text-red-500">{errors.name.message}</p>}
           <Controller
             name="email"
             control={control}
