@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { User } from "../services/users.services";
 import useUsers from "../hooks/users.hooks";
+import { useStore } from "../../../zustand/store";
 
 type modalUsersProps = {
   toggleModal: (bool: boolean) => void;
@@ -12,7 +13,8 @@ type modalUsersProps = {
 }
 
 export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps) {
-  const { CreateUser } = useUsers();
+  const { themeMode } = useStore();
+  const { editUser, addUser } = useUsers();
 
   const { handleSubmit, formState: { errors }, control, setValue } = useForm<User>({
     defaultValues: {
@@ -32,9 +34,8 @@ export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps)
   }, [user, mode, setValue]);
 
   const onSubmit = async (data: User) => {
-    // falta condicional para saber si es create o update
-    // falta funcionalidad de update
-    await CreateUser(data); 
+    if (mode === 'create') await addUser(data); 
+    else if (user && user.id) await editUser(data, user.id);
     toggleModal(false);
   };
 
@@ -45,10 +46,12 @@ export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps)
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative z-50 w-full sm:w-1/2 p-8 rounded-md backdrop-blur-sm"
+        className={`relative z-50 w-full sm:w-1/2 p-8 rounded-md backdrop-blur-sm ${themeMode == 'dark' ? 'bg-black' : 'bg-white'}`}
       >
         <div className="mb-4 flex justify-between">
-          <h2 className="text-xl text-white">{mode === 'create' ? 'Nuevo' : 'Actualizar'} Usuario</h2>
+          <h2 className={`text-xl ${themeMode == 'dark' ? 'text-white' : 'text-black'} `}>
+            {mode === 'create' ? 'Nuevo' : 'Actualizar'} Usuario
+          </h2>
           <X className="cursor-pointer" onClick={() => toggleModal(false)} />
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -92,8 +95,8 @@ export default function ModalUsers({ toggleModal, mode, user }: modalUsersProps)
             control={control}
             rules={{
               required: { value: true, message: 'Campo requerido!' }, pattern: {
-                value: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/,
-                message: 'La contraseña debe tener al menos 5 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial.'
+                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{5,}$/,
+                message: 'La contraseña debe tener al menos 5 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@$!%*?&#).'
               }
             }}
             render={({ field }) => (

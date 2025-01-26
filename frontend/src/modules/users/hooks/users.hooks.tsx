@@ -1,19 +1,29 @@
-import { useCallback, useState } from "react";
-import { createUser, fetchAllUsers, User } from "../services/users.services";
+import { createUser, deleteUser, getAllUsers, updateUser, User } from "../services/users.services";
+import { useStore } from "../../../zustand/store";
 
 
 export default function useUsers() {
-  const [users, setUsers] = useState<User[]>([]);
+  const { setUsers } = useStore();
 
-  const getUsers = useCallback(async () => {
-    const data = await fetchAllUsers();
+  const getUsers = async () => {
+    const data = await getAllUsers();
     setUsers(data || []);
-  }, []);
+  };
 
-  const CreateUser = async (body: User) => {
+  const addUser = async (body: User) => {
     await createUser(body);
     await getUsers();
   }
 
-  return { users, CreateUser, getUsers}
+  const  editUser = async (body: Partial<User> ,id: string) => {
+    await updateUser(body, id);
+    await getUsers();
+  }
+
+  const removeUser = async (id: string) => {
+    await deleteUser(id);
+    await getUsers();
+  }
+
+  return { removeUser, editUser, addUser, getUsers}
 }

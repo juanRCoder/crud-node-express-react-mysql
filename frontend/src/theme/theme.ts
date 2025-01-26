@@ -4,14 +4,14 @@ import { createTheme } from '@mui/material/styles';
 export const theme = (mode: 'light' | 'dark') =>
   createTheme({
     palette: {
-      mode: mode,
+      mode: mode || 'dark',
       primary: {
-        main: mode == 'dark' ? '#ffffff' : '#000000',
-        contrastText: mode == 'dark' ? '#000000' : '#ffffff',
+        main: mode == 'dark' ? '#FEFEFE' : '#000000',
+        contrastText: mode == 'dark' ? '#000000' : '#FEFEFE',
       },
       success: {
         main: '#4caf50',
-        contrastText: '#ffffff',
+        contrastText: '#FEFEFE',
       },
     },
   });

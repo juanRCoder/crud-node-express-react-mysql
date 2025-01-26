@@ -4,10 +4,10 @@ export interface User {
   id?: string;
   name: string;
   email: string;
-  password?: string; 
+  password: string; 
 }
 
-export const fetchAllUsers = async (): Promise<User[] | null> => {
+export const getAllUsers = async (): Promise<User[] | null> => {
   try {
     const response = await fetch(`${HOST_BACK}/users`);
     if (!response.ok) throw new Error("No se ha podido realizar la solicitud");
@@ -28,7 +28,38 @@ export const createUser = async (body: User) => {
     });
     if (!response.ok) throw new Error("No se ha podido realizar la solicitud");
     const data = await response.json();
-    console.log(data);
+    console.log(data)
+  } catch(error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export const updateUser = async (body: Partial<User>, id: string) => {
+  try {
+    const response = await fetch(`${HOST_BACK}/users/${id}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    if (!response.ok) throw new Error("No se ha podido realizar la solicitud");
+    const data = await response.json();
+    console.log(data)
+  } catch(error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export const deleteUser = async (id: string) => {
+  try {
+    const response = await fetch(`${HOST_BACK}/users/${id}`, {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json'}
+    });
+    if (!response.ok) throw new Error("No se ha podido realizar la solicitud");
+    const data = await response.json();
+    console.log(data)
   } catch(error) {
     console.error(error);
     return null;
