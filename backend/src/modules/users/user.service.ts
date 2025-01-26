@@ -1,5 +1,5 @@
 import { prisma } from "../../prisma";
-import { createUserDTO } from "./dto/user";
+import { createUserDTO, updateUserDTO } from "./dto/user";
 
 export const getAllUsers = async () => {
   const users = await prisma.user.findMany();
@@ -22,7 +22,7 @@ export const postCreateUser = async ( data: createUserDTO) => {
   return {status: 201, user};
 };
 
-export const putUpdateUser = async (data: createUserDTO, id: string) => {
+export const putUpdateUser = async (data: updateUserDTO, id: string) => {
   const { name, email, password } = data;
   const findId = await prisma.user.findUnique({where: {id}});
   if (!findId) return { status: 404 };

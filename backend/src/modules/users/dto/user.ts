@@ -3,3 +3,5 @@ export interface createUserDTO {
   email: string;
   password: string;
 }
+
+export type updateUserDTO = Partial<createUserDTO>;
