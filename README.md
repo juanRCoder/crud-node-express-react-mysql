@@ -1,4 +1,4 @@
-## CRUD-MERN-DOCKER-MYSQL
+## MERN-CRUD-USERS-PRACTICE
 
 - Aplicativo donde practico y aprendo a como implementar tanto el front como el back con los frameworks de javascript, asi como organizar archivos y carpetas para un entorno real.
 
